@@ -12,7 +12,7 @@ func DefaultHTML(i *webpage.Info, sourceURL string, doc *goquery.Document, log k
 	log.Infof("Running OG extract. " + sourceURL)
 
 	selection := doc.Find("title")
-	if len(selection.Nodes) != 0 {
+	if len(selection.Nodes) != 0 && selection.Nodes[0].FirstChild != nil {
 		i.Caption = selection.Nodes[0].FirstChild.Data
 	}
 

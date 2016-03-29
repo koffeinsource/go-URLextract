@@ -14,6 +14,6 @@ type Info struct {
 	// Typically an abstract. But may also contain an image if the source was e.g. a comic.
 	Description string
 
-	// The HTML of the queried webpage
+	// The HTML body of the queried webpage
 	HTML string
 }
