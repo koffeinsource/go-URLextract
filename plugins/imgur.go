@@ -11,41 +11,40 @@ import (
 	"github.com/koffeinsource/go-klogger"
 )
 
-func createIMGTag(link string, gifv string, height int, width int) string {
+func createIMGTag(link string, webm string, mp4 string, height int, width int) string {
 	var ret string
+	if webm != "" && mp4 != "" {
+		ret = "<video preload=\"auto\" autoplay=\"autoplay\" muted=\"muted\" loop=\"loop\""
+		ret += " style=\"width: " + strconv.Itoa(width) + "px; height: " + strconv.Itoa(height) + "px;\">"
+		ret += "<source src=\"" + strings.Replace(webm, "http://", "https://", 1) + "type=\"video/webm\">"
+		ret += "<source src=\"" + strings.Replace(mp4, "http://", "https://", 1) + "type=\"video/mp4\">"
+		ret += "</video><br/>"
+		return ret
+	}
 	ret = "<img "
 	ret += "height=\"" + strconv.Itoa(height) + "\" width=\"" + strconv.Itoa(width) + "\""
 	ret += "src =\""
-	if gifv != "" {
-		ret += gifv
-	} else {
-		ret += link
-	}
-	// todo height
+	ret += strings.Replace(link, "http://", "https://", 1)
+
 	ret += "\" /><br/>"
 	return ret
 }
 
 func image(i *webpage.Info, v interface{}) {
+	i.URL = strings.Replace(i.URL, "http://", "https://", 1)
 	i.ImageURL = ""
 
 	switch s := v.(type) {
 	case *imgur.ImageInfo:
 		i.Caption = s.Title
-		i.Description = createIMGTag(s.Link, s.Gifv, s.Height, s.Width)
-		if s.Section != "" {
-			i.Description += "#" + s.Section + "<br/>"
-		}
+		i.Description = createIMGTag(s.Link, s.Webm, s.Mp4, s.Height, s.Width)
 		if s.Description != "" {
 			i.Description += s.Description
 		}
 
 	case *imgur.GalleryImageInfo:
 		i.Caption = s.Title
-		i.Description = createIMGTag(s.Link, s.Gifv, s.Height, s.Width)
-		if s.Section != "" {
-			i.Description += "#" + s.Section + "<br/>"
-		}
+		i.Description = createIMGTag(s.Link, s.Webm, s.Mp4, s.Height, s.Width)
 		if s.Description != "" {
 			i.Description += s.Description
 		}
@@ -59,29 +58,35 @@ func album(i *webpage.Info, v interface{}) {
 
 	switch s := v.(type) {
 	case *imgur.AlbumInfo:
+		i.URL = strings.Replace(s.Link, "http://", "https://", 1)
 		i.Caption = "[ALBUM] " + s.Title
+
 		i.Description = ""
 		fmt.Println(s.ImagesCount)
-		if s.ImagesCount > 0 {
-			i.Description = createIMGTag(s.Images[0].Link, s.Images[0].Gifv, s.Images[0].Height, s.Images[0].Width)
-			i.Description += "…"
-		}
 		if s.Description != "" {
 			i.Description += s.Description
 		}
-		i.URL = s.Link
+		if s.ImagesCount > 0 {
+			i.Description += createIMGTag(s.Images[0].Link, s.Images[0].Webm, s.Images[0].Mp4, s.Images[0].Height, s.Images[0].Width)
+		}
+		if s.ImagesCount > 1 {
+			i.Description += "Click the link below for the rest of the album!<br/>"
+		}
 
 	case *imgur.GalleryAlbumInfo:
+		i.URL = strings.Replace(s.Link, "http://", "https://", 1)
 		i.Caption = "[ALBUM] " + s.Title
+
 		i.Description = ""
-		if s.ImagesCount > 0 {
-			i.Description = createIMGTag(s.Images[0].Link, s.Images[0].Gifv, s.Images[0].Height, s.Images[0].Width)
-			i.Description += "…"
-		}
 		if s.Description != "" {
 			i.Description += s.Description
 		}
-		i.URL = s.Link
+		if s.ImagesCount > 0 {
+			i.Description += createIMGTag(s.Images[0].Link, s.Images[0].Webm, s.Images[0].Mp4, s.Images[0].Height, s.Images[0].Width)
+		}
+		if s.ImagesCount > 1 {
+			i.Description += "Click the link below for the rest of the album!<br/>"
+		}
 
 	default:
 		panic("Passed invalid type to album function in go-URLextract imgur plugin")
