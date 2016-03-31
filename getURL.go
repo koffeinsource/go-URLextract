@@ -8,7 +8,7 @@ import (
 )
 
 // getURL returns the content type, body and error
-func getURL(sourceURL string, c Config) (string, []byte, error) {
+func (c *Client) getURL(sourceURL string) (string, []byte, error) {
 	client := c.HTTPClient
 
 	// Make a request to the sorceURL

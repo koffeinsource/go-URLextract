@@ -6,8 +6,8 @@ import (
 	"github.com/koffeinsource/go-klogger"
 )
 
-// Config used to configure go-URLextract
-type Config struct {
+// Client used to access go-URLextract
+type Client struct {
 	HTTPClient *http.Client
 	Log        klogger.KLogger
 	AmazonAdID string

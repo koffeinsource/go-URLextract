@@ -27,8 +27,8 @@ func main() {
 		return
 	}
 	fmt.Println(" success!")
-	var c URLextract.Config
+	var c URLextract.Client
 	c.HTTPClient = new(http.Client)
 	c.Log = new(klogger.CLILogger)
-	fmt.Print(URLextract.Extract(*webaddr, c))
+	fmt.Print(c.Extract(*webaddr))
 }

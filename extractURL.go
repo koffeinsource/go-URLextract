@@ -13,7 +13,7 @@ import (
 )
 
 // Extract extracts all information from URL
-func Extract(sourceURL string, c Config) (webpage.Info, error) {
+func (c *Client) Extract(sourceURL string) (webpage.Info, error) {
 
 	// Create return value with default values
 	returnee := webpage.Info{
@@ -28,7 +28,7 @@ func Extract(sourceURL string, c Config) (webpage.Info, error) {
 		return returnee, errReturn
 	}
 
-	contentType, body, err := getURL(sourceURL, c)
+	contentType, body, err := c.getURL(sourceURL)
 	if err != nil {
 		return returnee, err
 	}
