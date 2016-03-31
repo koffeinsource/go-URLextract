@@ -36,7 +36,12 @@ func (c *Client) Extract(sourceURL string) (webpage.Info, error) {
 	//  log.Infof(contentType)
 	switch {
 	case strings.Contains(contentType, "image/"):
-		plugins.Image(&returnee, sourceURL, contentType, c.Log)
+		// Image hostet at imgur?
+		if strings.Contains(sourceURL, "i.imgur.com/") {
+			plugins.Imgurl(&returnee, sourceURL, c.HTTPClient, c.Log, c.ImgurClientID)
+		} else {
+			plugins.Image(&returnee, sourceURL, contentType, c.Log)
+		}
 	case strings.Contains(contentType, "text/html"):
 
 		var doc *goquery.Document
@@ -57,8 +62,7 @@ func (c *Client) Extract(sourceURL string) (webpage.Info, error) {
 		plugins.DefaultHTML(&returnee, sourceURL, doc, c.Log)
 
 		plugins.Amazon(&returnee, sourceURL, doc, c.Log, c.AmazonAdID)
-
-		plugins.Imgurl(&returnee, sourceURL, doc, c.Log)
+		plugins.Imgurl(&returnee, sourceURL, c.HTTPClient, c.Log, c.ImgurClientID)
 		plugins.Gfycat(&returnee, sourceURL, doc, c.Log)
 
 		plugins.Fefe(&returnee, sourceURL, doc, c.Log)

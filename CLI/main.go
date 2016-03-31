@@ -11,11 +11,12 @@ import (
 )
 
 func main() {
+	imgurClientID := flag.String("imgurid", "", "Your imgur client id. REQUIRED!")
 	webaddr := flag.String("url", "", "The URL to be parsed.")
 	flag.Parse()
 
 	// Check if URL was passed at command line
-	if *webaddr == "" {
+	if *webaddr == "" || *imgurClientID == "" {
 		flag.PrintDefaults()
 		return
 	}
@@ -30,5 +31,12 @@ func main() {
 	var c URLextract.Client
 	c.HTTPClient = new(http.Client)
 	c.Log = new(klogger.CLILogger)
-	fmt.Print(c.Extract(*webaddr))
+	c.ImgurClientID = *imgurClientID
+
+	wi, err := c.Extract(*webaddr)
+	if err != nil {
+		fmt.Println("ERROR: " + err.Error())
+		return
+	}
+	fmt.Printf("Caption: %v \nDescription: %v \nImage URL: %v \nURL: %v\n", wi.Caption, wi.Description, wi.ImageURL, wi.URL)
 }

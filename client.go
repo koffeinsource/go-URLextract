@@ -8,7 +8,8 @@ import (
 
 // Client used to access go-URLextract
 type Client struct {
-	HTTPClient *http.Client
-	Log        klogger.KLogger
-	AmazonAdID string
+	HTTPClient    *http.Client
+	Log           klogger.KLogger
+	AmazonAdID    string
+	ImgurClientID string
 }
