@@ -36,14 +36,20 @@ func image(i *webpage.Info, v interface{}) {
 
 	switch s := v.(type) {
 	case *imgur.ImageInfo:
-		i.Caption = s.Title
+		if s.Title != "" {
+			i.Caption = s.Title
+		}
+
 		i.Description = createIMGTag(s.Link, s.Webm, s.Mp4, s.Height, s.Width)
 		if s.Description != "" {
 			i.Description += s.Description
 		}
 
 	case *imgur.GalleryImageInfo:
-		i.Caption = s.Title
+		if s.Title != "" {
+			i.Caption = s.Title
+		}
+
 		i.Description = createIMGTag(s.Link, s.Webm, s.Mp4, s.Height, s.Width)
 		if s.Description != "" {
 			i.Description += s.Description
@@ -59,7 +65,9 @@ func album(i *webpage.Info, v interface{}) {
 	switch s := v.(type) {
 	case *imgur.AlbumInfo:
 		i.URL = strings.Replace(s.Link, "http://", "https://", 1)
-		i.Caption = "[ALBUM] " + s.Title
+		if s.Title != "" {
+			i.Caption = "[ALBUM] " + s.Title
+		}
 
 		i.Description = ""
 		fmt.Println(s.ImagesCount)
@@ -75,7 +83,9 @@ func album(i *webpage.Info, v interface{}) {
 
 	case *imgur.GalleryAlbumInfo:
 		i.URL = strings.Replace(s.Link, "http://", "https://", 1)
-		i.Caption = "[ALBUM] " + s.Title
+		if s.Title != "" {
+			i.Caption = "[ALBUM] " + s.Title
+		}
 
 		i.Description = ""
 		if s.Description != "" {
