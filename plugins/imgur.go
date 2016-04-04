@@ -11,6 +11,53 @@ import (
 	"github.com/koffeinsource/go-klogger"
 )
 
+// Imgurl extract all images from an imgurl album
+func Imgurl(i *webpage.Info, sourceURL string, httpClient *http.Client, log klogger.KLogger, imgurClientID string) {
+	if !strings.Contains(sourceURL, "imgur.com/") {
+		return
+	}
+
+	log.Infof("Running imgurl plugin.")
+
+	client := new(imgur.Client)
+	client.HTTPClient = httpClient
+	client.Log = log
+	client.ImgurClientID = imgurClientID
+
+	gi, status, err := client.GetInfoFromURL(sourceURL)
+
+	if err != nil {
+		log.Errorf("Error using go-imgur. Status: %v. Error: %v", status, err)
+		return
+	}
+	if status > 399 {
+		log.Errorf("Error using go-imgur. Status: %v. Error: nil", status)
+		return
+	}
+
+	if gi.Image != nil {
+		image(i, gi.Image)
+		return
+	}
+	if gi.GImage != nil {
+		image(i, gi.GImage)
+		return
+	}
+
+	if gi.Album != nil {
+		log.Debugf("1\n")
+		album(i, gi.Album)
+		return
+	}
+	if gi.GAlbum != nil {
+		log.Debugf("2\n")
+		album(i, gi.GAlbum)
+		return
+	}
+
+	panic("Unknown type used in go-URLextract imgur plugin")
+}
+
 func createIMGTag(link string, webm string, mp4 string, height int, width int) string {
 	var ret string
 	if webm != "" && mp4 != "" {
@@ -101,51 +148,4 @@ func album(i *webpage.Info, v interface{}) {
 	default:
 		panic("Passed invalid type to album function in go-URLextract imgur plugin")
 	}
-}
-
-// Imgurl extract all images from an imgurl album
-func Imgurl(i *webpage.Info, sourceURL string, httpClient *http.Client, log klogger.KLogger, imgurClientID string) {
-	if !strings.Contains(sourceURL, "imgur.com/") {
-		return
-	}
-
-	log.Infof("Running imgurl plugin.")
-
-	client := new(imgur.Client)
-	client.HTTPClient = httpClient
-	client.Log = log
-	client.ImgurClientID = imgurClientID
-
-	gi, status, err := client.GetInfoFromURL(sourceURL)
-
-	if err != nil {
-		log.Errorf("Error using go-imgur. Status: %v. Error: %v", status, err)
-		return
-	}
-	if status > 399 {
-		log.Errorf("Error using go-imgur. Status: %v. Error: nil", status)
-		return
-	}
-
-	if gi.Image != nil {
-		image(i, gi.Image)
-		return
-	}
-	if gi.GImage != nil {
-		image(i, gi.GImage)
-		return
-	}
-
-	if gi.Album != nil {
-		log.Debugf("1\n")
-		album(i, gi.Album)
-		return
-	}
-	if gi.GAlbum != nil {
-		log.Debugf("2\n")
-		album(i, gi.GAlbum)
-		return
-	}
-
-	panic("Unknown type used in go-URLextract imgur plugin")
 }
