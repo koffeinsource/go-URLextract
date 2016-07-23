@@ -12,6 +12,11 @@ import (
 	"golang.org/x/net/html/charset"
 )
 
+// TODO refactor this function into two functions.
+// 1.) ExtractFast() a functions that only parsers the webpage
+// 2.) CompleteExtract() a functions that queries external services
+// 3.) Extract := CompleteExtract(ExtractFast)
+
 // Extract extracts all information from URL
 func (c *Client) Extract(sourceURL string) (webpage.Info, error) {
 
