@@ -16,6 +16,7 @@ import (
 // 1.) ExtractFast() a functions that only parsers the webpage
 // 2.) CompleteExtract() a functions that queries external services
 // 3.) Extract := CompleteExtract(ExtractFast)
+// Maybe support batching for CompleteExtract?
 
 // Extract extracts all information from URL
 func (c *Client) Extract(sourceURL string) (webpage.Info, error) {
@@ -79,6 +80,8 @@ func (c *Client) Extract(sourceURL string) (webpage.Info, error) {
 		plugins.Garfield(&returnee, sourceURL, doc, c.Log)
 		plugins.Xkcd(&returnee, sourceURL, doc, c.Log)
 		plugins.Littlegamers(&returnee, sourceURL, doc, c.Log)
+
+		plugins.IEEExplore(&returnee, sourceURL, doc, c.Log)
 
 		plugins.Pastebin(&returnee, sourceURL, doc, c.Log)
 	default:
