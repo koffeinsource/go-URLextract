@@ -34,6 +34,11 @@ func (c *Client) Extract(sourceURL string) (webpage.Info, error) {
 		return returnee, errReturn
 	}
 
+	// TODO generalize the concept...
+	if strings.Index(sourceURL, "https://dl.acm.org/citation.cfm?") != -1 {
+		sourceURL += "&preflayout=flat"
+	}
+
 	contentType, body, err := c.getURL(sourceURL)
 	if err != nil {
 		return returnee, err
@@ -82,6 +87,7 @@ func (c *Client) Extract(sourceURL string) (webpage.Info, error) {
 		plugins.Littlegamers(&returnee, sourceURL, doc, c.Log)
 
 		plugins.IEEExplore(&returnee, sourceURL, doc, c.Log)
+		plugins.ACMDigLib(&returnee, sourceURL, doc, c.Log)
 
 		plugins.Pastebin(&returnee, sourceURL, doc, c.Log)
 	default:
