@@ -1,7 +1,7 @@
 module github.com/koffeinsource/go-URLextract
 
 require (
-	github.com/PuerkitoBio/goquery v1.4.1
+	github.com/PuerkitoBio/goquery v1.5.0
 	github.com/andybalholm/cascadia v1.0.0 // indirect
 	github.com/asaskevich/govalidator v0.0.0-20180720115003-f9ffefc3facf
 	github.com/kennygrant/sanitize v1.2.4
