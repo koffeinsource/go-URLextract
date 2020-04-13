@@ -12,7 +12,7 @@ import (
 
 func main() {
 	imgurClientID := flag.String("imgurid", "", "Your imgur client id. REQUIRED!")
-	webaddr := flag.String("url", "", "The URL to be parsed.")
+	webaddr := flag.String("url", "", "The URL to be parsed. REQUIRED!")
 	flag.Parse()
 
 	// Check if URL was passed at command line
