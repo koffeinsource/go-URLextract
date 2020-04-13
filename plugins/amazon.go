@@ -13,7 +13,7 @@ import (
 
 // Amazon webpage plugin
 func Amazon(i *webpage.Info, sourceURL string, doc *goquery.Document, log klogger.KLogger, amazonAdID string) {
-	if !strings.Contains(sourceURL, "www.amazon.") {
+	if !(strings.Contains(sourceURL, "www.amazon.") || strings.Contains(sourceURL, "smile.amazon.")) {
 		return
 	}
 
@@ -86,4 +86,7 @@ func Amazon(i *webpage.Info, sourceURL string, doc *goquery.Document, log klogge
 			i.HTML = s
 		}
 	}
+
+	i.Caption = strings.TrimSpace(i.Caption)
+	i.Description = strings.TrimSpace(i.Description)
 }
