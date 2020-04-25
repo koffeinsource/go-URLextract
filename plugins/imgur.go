@@ -36,26 +36,24 @@ func Imgurl(i *webpage.Info, sourceURL string, httpClient *http.Client, log klog
 	}
 
 	if gi.Image != nil {
-		image(i, gi.Image)
+		image(i, gi.Image, log)
 		return
 	}
 	if gi.GImage != nil {
-		image(i, gi.GImage)
+		image(i, gi.GImage, log)
 		return
 	}
 
 	if gi.Album != nil {
-		log.Debugf("1\n")
-		album(i, gi.Album)
+		album(i, gi.Album, log)
 		return
 	}
 	if gi.GAlbum != nil {
-		log.Debugf("2\n")
-		album(i, gi.GAlbum)
+		album(i, gi.GAlbum, log)
 		return
 	}
 
-	panic("Unknown type used in go-URLextract imgur plugin")
+	log.Criticalf("Unknown type used in go-URLextract imgur plugin")
 }
 
 func createIMGTag(link string, mp4 string, height int, width int) string {
@@ -76,7 +74,7 @@ func createIMGTag(link string, mp4 string, height int, width int) string {
 	return ret
 }
 
-func image(i *webpage.Info, v interface{}) {
+func image(i *webpage.Info, v interface{}, log klogger.KLogger) {
 	i.URL = strings.Replace(i.URL, "http://", "https://", 1)
 	i.ImageURL = ""
 
@@ -101,18 +99,18 @@ func image(i *webpage.Info, v interface{}) {
 			i.Description += s.Description
 		}
 	default:
-		panic("Passed invalid type to image function in go-URLextract imgur plugin")
+		log.Criticalf("Passed invalid type to image function in go-URLextract imgur plugin")
 	}
 }
 
-func album(i *webpage.Info, v interface{}) {
+func album(i *webpage.Info, v interface{}, log klogger.KLogger) {
 	i.ImageURL = ""
 
 	switch s := v.(type) {
 	case *imgur.AlbumInfo:
 		i.URL = strings.Replace(s.Link, "http://", "https://", 1)
 		if s.Title != "" {
-			i.Caption = "[ALBUM] " + s.Title
+			i.Caption = s.Title
 		}
 
 		i.Description = ""
@@ -130,7 +128,7 @@ func album(i *webpage.Info, v interface{}) {
 	case *imgur.GalleryAlbumInfo:
 		i.URL = strings.Replace(s.Link, "http://", "https://", 1)
 		if s.Title != "" {
-			i.Caption = "[ALBUM] " + s.Title
+			i.Caption = s.Title
 		}
 
 		i.Description = ""
@@ -145,6 +143,6 @@ func album(i *webpage.Info, v interface{}) {
 		}
 
 	default:
-		panic("Passed invalid type to album function in go-URLextract imgur plugin")
+		log.Criticalf("Passed invalid type to album function in go-URLextract imgur plugin")
 	}
 }
