@@ -58,12 +58,11 @@ func Imgurl(i *webpage.Info, sourceURL string, httpClient *http.Client, log klog
 	panic("Unknown type used in go-URLextract imgur plugin")
 }
 
-func createIMGTag(link string, webm string, mp4 string, height int, width int) string {
+func createIMGTag(link string, mp4 string, height int, width int) string {
 	var ret string
-	if webm != "" && mp4 != "" {
+	if mp4 != "" {
 		ret = "<video preload=\"auto\" autoplay=\"autoplay\" muted=\"muted\" loop=\"loop\""
 		ret += " style=\"width: " + strconv.Itoa(width) + "px; height: " + strconv.Itoa(height) + "px;\">"
-		ret += "<source src=\"" + strings.Replace(webm, "http://", "https://", 1) + "type=\"video/webm\">"
 		ret += "<source src=\"" + strings.Replace(mp4, "http://", "https://", 1) + "type=\"video/mp4\">"
 		ret += "</video><br/>"
 		return ret
@@ -87,7 +86,7 @@ func image(i *webpage.Info, v interface{}) {
 			i.Caption = s.Title
 		}
 
-		i.Description = createIMGTag(s.Link, s.Webm, s.Mp4, s.Height, s.Width)
+		i.Description = createIMGTag(s.Link, s.Mp4, s.Height, s.Width)
 		if s.Description != "" {
 			i.Description += s.Description
 		}
@@ -97,7 +96,7 @@ func image(i *webpage.Info, v interface{}) {
 			i.Caption = s.Title
 		}
 
-		i.Description = createIMGTag(s.Link, s.Webm, s.Mp4, s.Height, s.Width)
+		i.Description = createIMGTag(s.Link, s.Mp4, s.Height, s.Width)
 		if s.Description != "" {
 			i.Description += s.Description
 		}
@@ -122,7 +121,7 @@ func album(i *webpage.Info, v interface{}) {
 			i.Description += s.Description
 		}
 		if s.ImagesCount > 0 {
-			i.Description += createIMGTag(s.Images[0].Link, s.Images[0].Webm, s.Images[0].Mp4, s.Images[0].Height, s.Images[0].Width)
+			i.Description += createIMGTag(s.Images[0].Link, s.Images[0].Mp4, s.Images[0].Height, s.Images[0].Width)
 		}
 		if s.ImagesCount > 1 {
 			i.Description += "Click the link below for the rest of the album!<br/>"
@@ -139,7 +138,7 @@ func album(i *webpage.Info, v interface{}) {
 			i.Description += s.Description
 		}
 		if s.ImagesCount > 0 {
-			i.Description += createIMGTag(s.Images[0].Link, s.Images[0].Webm, s.Images[0].Mp4, s.Images[0].Height, s.Images[0].Width)
+			i.Description += createIMGTag(s.Images[0].Link, s.Images[0].Mp4, s.Images[0].Height, s.Images[0].Width)
 		}
 		if s.ImagesCount > 1 {
 			i.Description += "Click the link below for the rest of the album!<br/>"
