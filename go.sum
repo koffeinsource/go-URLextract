@@ -13,6 +13,8 @@ github.com/koffeinsource/go-imgur v0.2.0 h1:Jx72knPUMN1nZYAxHR15jTN4jFQFurIkBSD6
 github.com/koffeinsource/go-imgur v0.2.0/go.mod h1:Bu1+VlbYv/5/rCFihEBX2IVK9WTga0AKkWFM9CoLDCA=
 github.com/koffeinsource/go-imgur v0.2.1 h1:BqtLGgv4k4E9TY9Agt1S5T/5Cl+LoCkzncadajpcJ54=
 github.com/koffeinsource/go-imgur v0.2.1/go.mod h1:Bu1+VlbYv/5/rCFihEBX2IVK9WTga0AKkWFM9CoLDCA=
+github.com/koffeinsource/go-imgur v0.3.0 h1:fJ2pffaWpdQC3TXYOdInQ8IyPTEi9OZEdkHs6Quhq/M=
+github.com/koffeinsource/go-imgur v0.3.0/go.mod h1:Bu1+VlbYv/5/rCFihEBX2IVK9WTga0AKkWFM9CoLDCA=
 github.com/koffeinsource/go-klogger v0.1.1 h1:FImHHVcDwEV4Ze3uOtRmBTQdJdzuBHtrvR4B8ssKkbw=
 github.com/koffeinsource/go-klogger v0.1.1/go.mod h1:oqHKXZOZt4uktar7WIYuEyWJRRlrkRSX+Uj1DWGZ79I=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
